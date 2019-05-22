@@ -4,6 +4,7 @@ library(ggmap)
 library(ggtern)
 library(data.table)
 library(sp)
+library(rgdal)
 
 #Shapefiles >> ggplot able, TW Map as tile
 TW <- readOGR(dsn = "./shp", layer = "Taiwan_county", encoding="utf8") #TWD97
