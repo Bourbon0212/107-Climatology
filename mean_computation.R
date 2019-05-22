@@ -70,7 +70,7 @@ mean_summary <- function(query) {
     } else if (query == "Summer") {
       data = filter(data, V1 >= as.Date("2018-06-01") & V1 <= as.Date("2018-08-31"))
     } else if (query == "Autumn") {
-      data = filter(data, V1 >= as.Date("2018-09-01") & V1 <= as.Date("2018-11-31"))
+      data = filter(data, V1 >= as.Date("2018-09-01") & V1 <= as.Date("2018-11-30"))
     } else if (query == "Winter") {
       data1 = filter(data, V1 >= as.Date("2018-01-01") & V1 <= as.Date("2018-02-28"))
       data2 = filter(data, V1 >= as.Date("2018-12-01") & V1 <= as.Date("2018-12-31"))
