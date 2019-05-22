@@ -30,11 +30,11 @@ interp_map <- function(query, pollut) {
   }
   
   temp <- list(x = data$Lon, y = data$Lat, z = z.data)
-  img <- interp(temp[["x"]], temp[["y"]], temp[["z"]])
+  img <- interp(temp[["x"]], temp[["y"]], temp[["z"]], extrap = T, linear = F)
   sta <- SpatialPoints(cbind(data[,7], data[,8]), proj4string = TW@proj4string) 
   
   plot(TW, main = paste("2018", query, pollut, "Pollution"))
-  image(s, asp = 1, add = T)
+  image(img, asp = 1, add = T)
   add.masking(TW.mask, col = "white")
   points(sta, pch = 20, col = "#00000044")
   plot(TW, add = T)
