@@ -1,8 +1,8 @@
 setwd("E:/GitHub/107-Climatology")
 
-middle <- c("ä¸­éƒ¨äºŒæž—ç«™", "ä¸­éƒ¨å—æŠ•ç«™", "ä¸­éƒ¨åŸ”é‡Œç«™", "ä¸­éƒ¨ç«¹å±±ç«™",
-            "ä¸­éƒ¨å¤§é‡Œç«™", "ä¸­éƒ¨å½°åŒ–ç«™", "ä¸­éƒ¨å¿ æ˜Žç«™", "ä¸­éƒ¨æ²™é¹¿ç«™",
-            "ä¸­éƒ¨ç·šè¥¿ç«™", "ä¸­éƒ¨è¥¿å±¯ç«™", "ä¸­éƒ¨è±åŽŸç«™")
+middle <- c("¤¤³¡¤GªL¯¸", "¤¤³¡«n§ë¯¸", "¤¤³¡®H¨½¯¸", "¤¤³¡¦Ë¤s¯¸",
+            "¤¤³¡¤j¨½¯¸", "¤¤³¡¹ü¤Æ¯¸", "¤¤³¡©¾©ú¯¸", "¤¤³¡¨F³À¯¸",
+            "¤¤³¡½u¦è¯¸", "¤¤³¡¦è¤Ù¯¸", "¤¤³¡Â×­ì¯¸")
 
 #Calculate Means of Each Pollutant per Day
 mean_day <- function (data) {
@@ -14,10 +14,10 @@ mean_day <- function (data) {
                     NOx = subset(data, V3 == "NOx")[,4:27])
 
   #Create a data.frame to store the result
-  result <- data.frame("æ¸¬ç«™" = rep(data[,"V2"][1], nrow(data)/5))
+  result <- data.frame("´ú¯¸" = rep(data[,"V2"][1], nrow(data)/5))
 
   #1 by row, 2 by col >> by row: per day
-  result[, c("O3(ppb)", "PM10(Î¼g/m3)", "CO(ppm)",  "SO2(ppb)",  "NOx(ppb)")] <- sapply(data.list, function(x) apply(x, 1, function(y) round(mean(y, na.rm = T), 3)))
+  result[, c("O3.ppb", "PM10.£gg/m3", "CO.ppm",  "SO2.ppb",  "NOx.ppb")] <- sapply(data.list, function(x) apply(x, 1, function(y) round(mean(y, na.rm = T), 3)))
   return(result)
 }
 
@@ -38,7 +38,7 @@ mean_summary <- function(query) {
   #Combine means with their lon, lat
   for (i in 1:length(middle)) {
     station <- read.csv("./data_processed/stations.csv")
-    read_from <- paste0("./data_processed/ä¸­éƒ¨ç©ºå“å€/", middle[i], ".csv")
+    read_from <- paste0("./data_processed/¤¤³¡ªÅ«~°Ï/", middle[i], ".csv")
     data <- read.csv(read_from, header = T)
     data$V1 <- as.Date(data$V1, format = "%Y/%m/%d")
     
@@ -75,19 +75,21 @@ mean_summary <- function(query) {
       data1 = filter(data, V1 >= as.Date("2018-01-01") & V1 <= as.Date("2018-02-28"))
       data2 = filter(data, V1 >= as.Date("2018-12-01") & V1 <= as.Date("2018-12-31"))
       data = rbind(data1, data2)
-    } else {
+    } else if (query == "All Year") {
       data = data
     }
     
     mean <- mean_data(data)
-    sta_lon <- as.numeric(as.character(subset(station, æ¸¬ç«™åç¨± == mean[1])[5]))
-    sta_lat <- as.numeric(as.character(subset(station, æ¸¬ç«™åç¨± == mean[1])[6]))
+    sta_lon <- as.numeric(as.character(subset(station, ´ú¯¸¦WºÙ == mean[1])[5]))
+    sta_lat <- as.numeric(as.character(subset(station, ´ú¯¸¦WºÙ == mean[1])[6]))
     result <- rbind(result, c(mean, sta_lon, sta_lat))
     
   }
   #Rename colnames
   result <- as.data.frame(result)
   colnames(result)[c(1,7,8)] <- c("Name", "Lon", "Lat")
+  #Factor to numeric
+  result[,2:8] <- lapply(result[,2:8], function(x) as.numeric(as.character(x)))
   
   return(result)
 }

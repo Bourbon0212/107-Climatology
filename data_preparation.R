@@ -1,26 +1,26 @@
 setwd("E:/GitHub/107-Climatology")
 
-middle <- c("ä¸­éƒ¨äºŒæž—ç«™", "ä¸­éƒ¨å—æŠ•ç«™", "ä¸­éƒ¨åŸ”é‡Œç«™", "ä¸­éƒ¨ç«¹å±±ç«™",
-            "ä¸­éƒ¨å¤§é‡Œç«™", "ä¸­éƒ¨å½°åŒ–ç«™", "ä¸­éƒ¨å¿ æ˜Žç«™", "ä¸­éƒ¨æ²™é¹¿ç«™",
-            "ä¸­éƒ¨ç·šè¥¿ç«™", "ä¸­éƒ¨è¥¿å±¯ç«™", "ä¸­éƒ¨è±åŽŸç«™")
+middle <- c("¤¤³¡¤GªL¯¸", "¤¤³¡«n§ë¯¸", "¤¤³¡®H¨½¯¸", "¤¤³¡¦Ë¤s¯¸",
+            "¤¤³¡¤j¨½¯¸", "¤¤³¡¹ü¤Æ¯¸", "¤¤³¡©¾©ú¯¸", "¤¤³¡¨F³À¯¸",
+            "¤¤³¡½u¦è¯¸", "¤¤³¡¦è¤Ù¯¸", "¤¤³¡Â×­ì¯¸")
 
 
 for (i in 1:length(middle)) {
   #Read in data
-  read_from <- paste0("./data/ä¸­éƒ¨ç©ºå“å€/", middle[i], ".csv")
+  read_from <- paste0("./data/¤¤³¡ªÅ«~°Ï/", middle[i], ".csv")
   data <- read.csv(read_from, header = F)
   data <- subset(data, V3 %in% c('O3', 'PM10', 'CO', 'SO2', 'NOx')) 
   rownames(data) <- c(1:nrow(data))
   #Factor to numeric, missing values to NAs
   data[,4:ncol(data)] <- lapply(data[,4:ncol(data)], function(x) as.numeric(as.character(x)))
   #Write to csv
-  write_to <- paste0("./data_processed/ä¸­éƒ¨ç©ºå“å€/", middle[i], ".csv")
+  write_to <- paste0("./data_processed/¤¤³¡ªÅ«~°Ï/", middle[i], ".csv")
   write.csv(data,file = write_to, row.names = FALSE)
 }
 
 #Data Integrity Check
 for (i in 1:length(middle)) {
-  read_from <- paste0("./data_processed/ä¸­éƒ¨ç©ºå“å€/", middle[i], ".csv")
+  read_from <- paste0("./data_processed/¤¤³¡ªÅ«~°Ï/", middle[i], ".csv")
   data <- read.csv(read_from, header = T)
   print(as.character(data[1,2]))
   print(summary(data$V3))
