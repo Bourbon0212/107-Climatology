@@ -20,7 +20,7 @@ interp_map <- function(query, pollut) {
   if (pollut == "O3") {
     z.data <- data$O3.ppb
   } else if (pollut == "PM10") {
-    z.data <- data$`PM10.£gg/m3`
+    z.data <- data$`PM10.?gg/m3`
   } else if (pollut == "CO") {
     z.data <- data$CO.ppm
   } else if (pollut == "SO2") {
@@ -29,13 +29,37 @@ interp_map <- function(query, pollut) {
     z.data <- data$NOx.ppb
   }
   
-  temp <- list(x = data$Lon, y = data$Lat, z = z.data)
-  img <- interp(temp[["x"]], temp[["y"]], temp[["z"]], extrap = T, linear = F)
+  #Remove missing values
+  index <- !is.na(z.data)
+  x.data <- data$Lon[index]
+  y.data <- data$Lat[index]
+  z.data <- z.data[index]
+  
+  temp <- list(x = x.data, y = y.data, z = z.data)
+  img <- interp(temp[["x"]], temp[["y"]], temp[["z"]], extrap = F, linear = F)
   sta <- SpatialPoints(cbind(data[,7], data[,8]), proj4string = TW@proj4string) 
+  
+  png_name <- paste0(query, "_", pollut, ".png")
+  
+  png(filename = paste0("./result/png/", png_name))
   
   plot(TW, main = paste("2018", query, pollut, "Pollution"))
   image(img, asp = 1, add = T)
   add.masking(TW.mask, col = "white")
   points(sta, pch = 20, col = "#00000044")
   plot(TW, add = T)
+  
+  dev.off()
 }
+
+query = c("All Year", "Spring", "Summer", "Autumn", "Winter", 
+          "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+          "Aug", "Sep", "Oct", "Nov", "Dec")
+pollut = c("O3", "CO", "SO2", "NOx")
+
+for (i in 1:length(query)) {
+  for (j in 1:length(pollut)) {
+    interp_map(query[i], pollut[j])
+  }
+}
+interp_map("Spring", "CO")
